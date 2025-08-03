@@ -1,0 +1,1 @@
+streamlit run "C:\Users\ravad\OneDrive\Desktop\multiple disease prediction streamlit\noice.py"
