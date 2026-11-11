@@ -1,6 +1,26 @@
 """
 University Minor Project Presentation Generator (16:9 Widescreen).
-Strictly tailored to Department of Computer Science & Engineering template guidelines.
+Strictly tailored to Department of Computer Science & Engineering syllabus agenda:
+
+Slide 1: Title Slide (DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING)
+Slide 2: Agenda
+Slide 3: Abstract
+Slide 4: Scope and Motivation
+Slide 5: Introduction
+Slide 6: Literature Survey ( Table format-year should be in Chronological order)
+Slide 7: Objectives
+Slide 8: Problem Statement
+Slide 9: Proposed Work
+Slide 10: Architecture Diagram/Flow Diagram/Block Diagram
+Slide 11: Novel idea
+Slide 12: Modules
+Slide 13: Module Description
+Slide 14: Software & Hardware Requirements
+Slide 15: References (Base paper hard copy to be submitted to the supervisor.)
+Slide 16: Way forward towards Outcome (Research Paper/Patent)
+
+Mandatory Footer on Every Slide:
+DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING                      SLIDE NO: <N>
 """
 
 from pptx import Presentation
@@ -15,18 +35,18 @@ def create_university_deck():
     prs.slide_height = Inches(7.5)
     blank_layout = prs.slide_layouts[6]
 
-    # Academic Palette
-    C_NAVY_DARK = RGBColor(15, 23, 42)    # #0F172A (Deep Slate/Navy)
-    C_NAVY_MED = RGBColor(30, 41, 59)     # #1E293B
-    C_INDIGO = RGBColor(79, 70, 229)      # #4F46E5 (Accent Primary)
-    C_BLUE = RGBColor(37, 99, 235)        # #2563EB
-    C_EMERALD = RGBColor(16, 185, 129)    # #10B981 (Success/Highlights)
-    C_AMBER = RGBColor(217, 119, 6)       # #D97706
-    C_LIGHT_BG = RGBColor(248, 250, 252)  # #F8FAFC
+    # Academic Visual Palette
+    C_NAVY_DARK = RGBColor(15, 23, 42)     # #0F172A
+    C_NAVY_MED = RGBColor(30, 41, 59)      # #1E293B
+    C_INDIGO = RGBColor(79, 70, 229)       # #4F46E5
+    C_BLUE = RGBColor(37, 99, 235)         # #2563EB
+    C_EMERALD = RGBColor(16, 185, 129)     # #10B981
+    C_AMBER = RGBColor(217, 119, 6)        # #D97706
+    C_LIGHT_BG = RGBColor(248, 250, 252)   # #F8FAFC
     C_WHITE = RGBColor(255, 255, 255)
-    C_BORDER = RGBColor(226, 232, 240)    # #E2E8F0
+    C_BORDER = RGBColor(226, 232, 240)     # #E2E8F0
     C_TEXT_DARK = RGBColor(15, 23, 42)
-    C_TEXT_MUTED = RGBColor(100, 116, 139) # #64748B
+    C_TEXT_MUTED = RGBColor(100, 116, 139)  # #64748B
 
     def set_bg(slide, color):
         fill = slide.background.fill
@@ -41,8 +61,8 @@ def create_university_deck():
         shape.line.width = Pt(line_w)
         return shape
 
-    def add_slide_structure(slide, slide_no, title_text, category_tracker="MINOR PROJECT EVALUATION"):
-        # Category Tracker
+    def add_slide_structure(slide, slide_no, title_text, category_tracker="DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING"):
+        # Top Tracker / Department Category
         c_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(11.733), Inches(0.3))
         tf_c = c_box.text_frame
         p_c = tf_c.paragraphs[0]
@@ -51,7 +71,7 @@ def create_university_deck():
         p_c.font.bold = True
         p_c.font.color.rgb = C_INDIGO
 
-        # Slide Main Title
+        # Slide Main Title (Matches syllabus verbatim)
         t_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.68), Inches(11.733), Inches(0.75))
         tf_t = t_box.text_frame
         p_t = tf_t.paragraphs[0]
@@ -60,7 +80,7 @@ def create_university_deck():
         p_t.font.bold = True
         p_t.font.color.rgb = C_TEXT_DARK
 
-        # Department Mandatory Footer
+        # Mandatory University Footer
         f_box = slide.shapes.add_textbox(Inches(0.8), Inches(6.9), Inches(11.733), Inches(0.4))
         tf_f = f_box.text_frame
         p_f = tf_f.paragraphs[0]
@@ -70,7 +90,7 @@ def create_university_deck():
         p_f.font.color.rgb = C_TEXT_MUTED
 
     # =========================================================================
-    # SLIDE 1: TITLE SLIDE (Department Header & Project Details)
+    # SLIDE 1: TITLE SLIDE
     # =========================================================================
     s1 = prs.slides.add_slide(blank_layout)
     set_bg(s1, C_NAVY_DARK)
@@ -86,7 +106,7 @@ def create_university_deck():
     p_dep.font.color.rgb = C_WHITE
     p_dep.alignment = PP_ALIGN.CENTER
 
-    # Main Project Title Box
+    # Project Title Card
     m_card = add_card(s1, Inches(0.8), Inches(1.5), Inches(11.733), Inches(3.6), bg_color=C_NAVY_MED, border_color=C_INDIGO)
     tb_m = s1.shapes.add_textbox(Inches(1.1), Inches(1.8), Inches(11.1), Inches(3.0))
     tf_m = tb_m.text_frame
@@ -99,32 +119,32 @@ def create_university_deck():
     p_proj.font.color.rgb = C_WHITE
 
     p_sub = tf_m.add_paragraph()
-    p_sub.text = "B.Tech Minor Project Presentation (Phase Review)"
+    p_sub.text = "B.Tech Minor Project Presentation (Phase Evaluation)"
     p_sub.font.size = Pt(14)
     p_sub.font.color.rgb = RGBColor(199, 210, 254)
     p_sub.space_before = Pt(8)
 
     p_tech = tf_m.add_paragraph()
-    p_tech.text = "Technologies: FastAPI • Scikit-Learn • Tailwind CSS • Chart.js • Docker • PDF Engine"
+    p_tech.text = "Domain: Artificial Intelligence & Healthcare Informatics | Stack: FastAPI • Scikit-Learn • Tailwind CSS • Chart.js • Docker"
     p_tech.font.size = Pt(11)
     p_tech.font.bold = True
     p_tech.font.color.rgb = C_EMERALD
     p_tech.space_before = Pt(12)
 
-    # Candidate and Guide Info Card
+    # Candidate and Guide Details Card
     cg_card = add_card(s1, Inches(0.8), Inches(5.3), Inches(11.733), Inches(1.5), bg_color=C_NAVY_MED, border_color=C_BORDER)
     tb_cg = s1.shapes.add_textbox(Inches(1.1), Inches(5.4), Inches(11.1), Inches(1.2))
     tf_cg = tb_cg.text_frame
     tf_cg.word_wrap = True
 
     p_c1 = tf_cg.paragraphs[0]
-    p_c1.text = "Presented by: Student Candidate (CSE Dept)                        Project Supervisor / Guide:"
+    p_c1.text = "Presented by: Student Candidate                                               Project Supervisor / Guide:"
     p_c1.font.size = Pt(11)
     p_c1.font.bold = True
     p_c1.font.color.rgb = C_WHITE
 
     p_c2 = tf_cg.add_paragraph()
-    p_c2.text = "Reg. / Roll No: RA2211003010862                                  Assistant Professor, Dept. of CSE"
+    p_c2.text = "Reg. / Roll No: [University Roll Number]                                   Assistant Professor, Dept. of CSE"
     p_c2.font.size = Pt(10.5)
     p_c2.font.color.rgb = RGBColor(203, 213, 225)
     p_c2.space_before = Pt(4)
@@ -143,48 +163,75 @@ def create_university_deck():
     # =========================================================================
     s2 = prs.slides.add_slide(blank_layout)
     set_bg(s2, C_LIGHT_BG)
-    add_slide_structure(s2, 2, "Presentation Agenda", "TABLE OF CONTENTS")
+    add_slide_structure(s2, 2, "Agenda")
 
-    agenda_items = [
-        ("01", "Abstract & Problem Statement", "Clinical motivation and challenges in non-communicable disease detection"),
-        ("02", "Scope & Motivation", "Context of preventative medicine and automated screening support"),
-        ("03", "Literature Survey", "Chronological comparative analysis of foundational research papers"),
-        ("04", "Objectives & Proposed Work", "Project design goals and decoupled end-to-end full-stack pipeline"),
-        ("05", "System Architecture & Novelty", "Four-tier architectural flow diagram and key technical innovations"),
-        ("06", "Modules & Module Description", "Deep-dive into Diabetes, Heart, Parkinson's & Breast Cancer screening"),
-        ("07", "Software & Hardware Specifications", "Runtime dependencies, libraries, frameworks, and minimum hardware"),
-        ("08", "Way Forward & References", "Targeted outcomes (Research paper publication) and academic citations")
+    # Display the exact bulleted agenda specified in the syllabus
+    card_left = add_card(s2, Inches(0.8), Inches(1.5), Inches(5.8), Inches(5.1))
+    tb_al = s2.shapes.add_textbox(Inches(1.0), Inches(1.7), Inches(5.4), Inches(4.7))
+    tf_al = tb_al.text_frame
+    tf_al.word_wrap = True
+
+    agenda_left = [
+        ("Abstract", "Executive summary of clinical objectives, models, and empirical outcomes"),
+        ("Scope and Motivation", "Healthcare burden, rural doctor shortages, and preventative screening"),
+        ("Introduction", "Evolution of medical AI, clinical decision support systems (CDSS)"),
+        ("Literature Survey", "Chronological table (1988–2024) evaluating prior state-of-the-art"),
+        ("Objectives", "Quantifiable engineering, algorithmic, and deployment targets"),
+        ("Problem Statement", "Mathematical risk formulation and shortcomings of legacy systems"),
+        ("Proposed Work", "Six-phase end-to-end full-stack machine learning engineering methodology")
     ]
 
-    for i, (num, title, desc) in enumerate(agenda_items):
-        col = i % 2
-        row = i // 2
-        left = Inches(0.8 + col * 5.95)
-        top = Inches(1.5 + row * 1.3)
-        
-        add_card(s2, left, top, Inches(5.8), Inches(1.18))
-        tb = s2.shapes.add_textbox(left + Inches(0.2), top + Inches(0.12), Inches(5.4), Inches(0.95))
-        tf = tb.text_frame
-        tf.word_wrap = True
+    for idx, (title, desc) in enumerate(agenda_left):
+        p_t = tf_al.paragraphs[0] if idx == 0 else tf_al.add_paragraph()
+        p_t.text = f"•  {title}"
+        p_t.font.size = Pt(11)
+        p_t.font.bold = True
+        p_t.font.color.rgb = C_INDIGO
+        if idx > 0:
+            p_t.space_before = Pt(8)
 
-        p = tf.paragraphs[0]
-        p.text = f"{num}.  {title}"
-        p.font.size = Pt(12)
-        p.font.bold = True
-        p.font.color.rgb = C_INDIGO
-
-        p_d = tf.add_paragraph()
-        p_d.text = desc
-        p_d.font.size = Pt(9.5)
+        p_d = tf_al.add_paragraph()
+        p_d.text = f"    {desc}"
+        p_d.font.size = Pt(9)
         p_d.font.color.rgb = C_TEXT_MUTED
-        p_d.space_before = Pt(2)
+        p_d.space_before = Pt(1)
+
+    card_right = add_card(s2, Inches(6.75), Inches(1.5), Inches(5.78), Inches(5.1))
+    tb_ar = s2.shapes.add_textbox(Inches(6.95), Inches(1.7), Inches(5.4), Inches(4.7))
+    tf_ar = tb_ar.text_frame
+    tf_ar.word_wrap = True
+
+    agenda_right = [
+        ("Architecture Diagram / Flow Diagram / Block Diagram", "Four-tier decoupled client-server & model inference architecture"),
+        ("Novel idea", "Acoustic phonation, multi-modal convergence, and dynamic PDF generation"),
+        ("Modules", "Decomposition of Diabetes, Heart, Parkinson's, Breast Cancer, and Report engine"),
+        ("Module Description", "Detailed algorithmic specifications, feature sets, and verified accuracies"),
+        ("Software & Hardware Requirements", "Development libraries, frameworks, environment specs, and Docker specs"),
+        ("References (Base paper submitted)", "Foundational academic literature (IEEE / Springer) and base paper submission"),
+        ("Way forward towards Outcome", "Publication strategy (IEEE/Scopus), copyright/patent filing, and clinical trials")
+    ]
+
+    for idx, (title, desc) in enumerate(agenda_right):
+        p_t = tf_ar.paragraphs[0] if idx == 0 else tf_ar.add_paragraph()
+        p_t.text = f"•  {title}"
+        p_t.font.size = Pt(11)
+        p_t.font.bold = True
+        p_t.font.color.rgb = C_INDIGO
+        if idx > 0:
+            p_t.space_before = Pt(8)
+
+        p_d = tf_ar.add_paragraph()
+        p_d.text = f"    {desc}"
+        p_d.font.size = Pt(9)
+        p_d.font.color.rgb = C_TEXT_MUTED
+        p_d.space_before = Pt(1)
 
     # =========================================================================
     # SLIDE 3: ABSTRACT
     # =========================================================================
     s3 = prs.slides.add_slide(blank_layout)
     set_bg(s3, C_LIGHT_BG)
-    add_slide_structure(s3, 3, "Project Abstract", "EXECUTIVE SUMMARY")
+    add_slide_structure(s3, 3, "Abstract")
 
     add_card(s3, Inches(0.8), Inches(1.5), Inches(11.733), Inches(5.1))
     tb_abs = s3.shapes.add_textbox(Inches(1.1), Inches(1.8), Inches(11.1), Inches(4.5))
@@ -192,25 +239,28 @@ def create_university_deck():
     tf_abs.word_wrap = True
 
     p_a1 = tf_abs.paragraphs[0]
-    p_a1.text = "Abstract:"
+    p_a1.text = "Executive Summary:"
     p_a1.font.size = Pt(14)
     p_a1.font.bold = True
     p_a1.font.color.rgb = C_INDIGO
 
     p_a2 = tf_abs.add_paragraph()
     p_a2.text = (
-        "Early detection of chronic and degenerative diseases is critical for timely clinical intervention, mitigating medical "
-        "complications, and reducing the global burden on healthcare systems. Traditional diagnostic modalities are frequently "
-        "time-consuming, resource-constrained, and specialist-dependent. This project presents MediScan AI, an automated, multi-modal "
-        "machine learning platform engineered for predictive clinical risk screening and decision support.\n\n"
-        "The system evaluates patient health profiles across four distinct clinical domains: Type 2 Diabetes Mellitus (Support Vector Machine), "
-        "Cardiovascular Disease (Logistic Regression with calibrated probability scoring), Parkinson's Disease via vocal acoustic dysphonia markers "
-        "(Linear SVM), and Breast Cancer fine needle aspirate biopsy cytopathology (Ensemble Random Forest with StandardScaler pipelines).\n\n"
-        "Departing from slow, reload-heavy prototype dashboards, the application implements an asynchronous decoupled full-stack architecture "
-        "powered by FastAPI and Uvicorn, delivering sub-20ms inference latency through a responsive Tailwind CSS single-page interface with Chart.js "
-        "visual gauges. Furthermore, an integrated automated reporting engine (fpdf2) dynamically compiles comprehensive patient diagnostic PDF summaries. "
-        "Empirical evaluation establishes test classification accuracies of 77.3% (Diabetes), 80.3% (Cardiovascular), 87.2% (Parkinson's), and 97.4% "
-        "(Breast Cancer), validating the platform as a robust, scalable preliminary diagnostic screening solution."
+        "Early identification of chronic and life-threatening medical conditions is imperative for timely therapeutic "
+        "intervention, mitigating morbidity rates, and reducing systemic burdens on hospital infrastructures. Conventional "
+        "diagnostic workflows are frequently delayed by specialist deficits, laboratory turnaround times, and high financial costs. "
+        "This project presents MediScan AI, an intelligent, multi-modal clinical decision-support system designed to perform "
+        "instantaneous predictive disease risk screening across non-invasive clinical biomarkers.\n\n"
+        "The proposed platform evaluates four distinct medical domains: Type 2 Diabetes Mellitus (Support Vector Classifier), "
+        "Cardiovascular Disease (Logistic Regression with calibrated probability scoring), Parkinson's Disease via vocal acoustic "
+        "dysphonia analysis (Linear SVM on 22 speech perturbations), and Breast Cancer fine needle aspirate biopsy cytopathology "
+        "(Ensemble Random Forest Pipeline with StandardScaler).\n\n"
+        "Addressing the severe latency and rigidity of prototype scripts (e.g., Streamlit), MediScan AI implements a high-performance "
+        "asynchronous architecture leveraging FastAPI and Uvicorn. The client interface is built as a reactive Single Page Application (SPA) "
+        "with Tailwind CSS and Chart.js, delivering real-time interactive risk meters in sub-20ms. Furthermore, an integrated automated "
+        "reporting engine compiles downloadable, hospital-ready PDF diagnostic summaries with full patient telemetry. "
+        "Empirical evaluation establishes test classification accuracies of 77.3% (Diabetes), 80.3% (Heart Disease), 87.2% (Parkinson's), "
+        "and 97.4% (Breast Cancer), confirming the platform as an accurate, scalable preliminary clinical triage solution."
     )
     p_a2.font.size = Pt(11)
     p_a2.font.color.rgb = C_TEXT_DARK
@@ -221,12 +271,12 @@ def create_university_deck():
     # =========================================================================
     s4 = prs.slides.add_slide(blank_layout)
     set_bg(s4, C_LIGHT_BG)
-    add_slide_structure(s4, 4, "Scope and Clinical Motivation", "CONTEXT & SIGNIFICANCE")
+    add_slide_structure(s4, 4, "Scope and Motivation")
 
     scope_cards = [
-        ("Clinical Motivation", "• Non-communicable diseases (NCDs) account for 74% of all worldwide deaths annually.\n• Asymptomatic latency periods in diabetes, coronary disease, and Parkinson's lead to delayed clinical triage.\n• Primary care and rural health centers face acute specialist shortages, demanding rapid automated screening tools.", C_INDIGO),
-        ("Project Scope", "• Covers 4 high-prevalence medical conditions across metabolic, cardiovascular, neurological, and oncological domains.\n• Implements non-invasive screening using readily available laboratory vitals, acoustic voice samples, and biopsy morphology.\n• Provides instant actionable triage classification prior to specialist consultation.", C_BLUE),
-        ("Target Beneficiaries", "• Primary Care Physicians: Accelerated preliminary screening and triage prioritizing high-risk cases.\n• Telemedicine Centers: Remote diagnostic consultation support with automated documentation export.\n• Patients: Clear visual risk indices, actionable lifestyle guidance, and official downloadable summaries.", C_EMERALD)
+        ("Clinical Motivation", "• Non-Communicable Diseases (NCDs) cause 74% of all annual deaths worldwide (WHO).\n• Asymptomatic latency periods in cardiovascular illness, diabetes, and Parkinson's lead to delayed clinical diagnosis.\n• Global primary healthcare faces severe specialist deficits, demanding fast, low-cost pre-diagnostic screening tools.", C_INDIGO),
+        ("Project Scope", "• Targets 4 major non-communicable disease categories: metabolic, cardiac, neurological, and oncological.\n• Ingests non-invasive clinical telemetry, laboratory vitals, acoustic voice recordings, and biopsy cytology.\n• Provides instant risk stratification, actionable lifestyle guidance, and official patient PDF summaries.", C_BLUE),
+        ("Target Beneficiaries", "• Primary Healthcare Workers: Rapid triage prioritization of high-risk patients before specialist referral.\n• Telemedicine Centers: Remote screening in underserved rural clinics with zero-reload interface responsiveness.\n• Patients: Clear visual interpretation of personal risk indices and downloadable doctor-ready documentation.", C_EMERALD)
     ]
 
     for i, (title, content, color) in enumerate(scope_cards):
@@ -254,13 +304,13 @@ def create_university_deck():
     # =========================================================================
     s5 = prs.slides.add_slide(blank_layout)
     set_bg(s5, C_LIGHT_BG)
-    add_slide_structure(s5, 5, "Introduction to MediScan AI", "FOUNDATIONAL BACKGROUND")
+    add_slide_structure(s5, 5, "Introduction")
 
     intro_points = [
-        ("Role of Artificial Intelligence in Healthcare", "Artificial Intelligence and Machine Learning have transformed modern medicine from reactive intervention to predictive, preventative triage. Machine learning algorithms can capture intricate non-linear biomarker correlations that may evade visual clinical inspection."),
-        ("Clinical Decision Support Systems (CDSS)", "CDSS software assists physicians in making evidence-based clinical judgments. Rather than attempting to replace human clinicians, modern CDSS tools provide instantaneous pre-screening risk stratification and highlight anomalous biomarkers."),
-        ("Need for Multi-Disease Convergence", "Existing computer-aided diagnostic tools are severely fragmented—offering isolated single-disease predictions in monolithic scripts. There is a pressing operational need for unified platforms that evaluate multiple systemic disease vectors within a single cohesive interface."),
-        ("Modern Engineering Transition", "Traditional academic ML tools rely heavily on script-based prototyping dashboards (e.g., Streamlit) that rerun entirely on every interaction. MediScan AI bridges this gap with production-grade asynchronous REST APIs, reactive single-page interfaces, and automated PDF clinical reporting.")
+        ("Evolution of AI in Modern Healthcare", "Machine learning and artificial intelligence have evolved healthcare from reactive treatment to predictive, preventative triage. Machine learning algorithms uncover intricate, multi-dimensional correlations across physiological vitals that may escape standard clinical observation."),
+        ("Clinical Decision Support Systems (CDSS)", "Modern CDSS applications empower physicians by functioning as intelligent preliminary decision aids. Rather than replacing certified medical practitioners, MediScan AI provides evidence-based risk scoring and flags anomalous biomarkers for immediate clinical review."),
+        ("The Need for Multi-Modal Disease Convergence", "Current academic and clinical diagnostic tools are deeply fragmented—offering isolated single-disease scripts in silos. MediScan AI solves this by integrating metabolic, cardiovascular, neurological, and oncological risk screening into a single cohesive platform."),
+        ("Transitioning from Prototypes to Production Software", "Conventional academic projects rely on script-based prototyping dashboards (e.g., Streamlit) that rerun the entire codebase on every user click, resulting in high latency. MediScan AI introduces a production-ready asynchronous FastAPI backend and a responsive Single Page Application.")
     ]
 
     for i, (head, text) in enumerate(intro_points):
@@ -284,13 +334,13 @@ def create_university_deck():
         p_t.space_before = Pt(3)
 
     # =========================================================================
-    # SLIDE 6: LITERATURE SURVEY (Chronological Table Format)
+    # SLIDE 6: LITERATURE SURVEY (Table format-year in Chronological order)
     # =========================================================================
     s6 = prs.slides.add_slide(blank_layout)
     set_bg(s6, C_LIGHT_BG)
-    add_slide_structure(s6, 6, "Literature Survey (Chronological Order)", "STATE OF THE ART REVIEW")
+    add_slide_structure(s6, 6, "Literature Survey ( Table format-year should be in Chronological order)")
 
-    # Table: 6 rows (1 header + 5 papers), 5 columns
+    # Table: 6 rows (1 header + 5 papers in chronological order), 5 columns
     t_shape = s6.shapes.add_table(6, 5, Inches(0.8), Inches(1.5), Inches(11.733), Inches(4.5))
     t = t_shape.table
 
@@ -311,9 +361,9 @@ def create_university_deck():
         p.alignment = PP_ALIGN.CENTER
 
     lit_data = [
-        ["1988", "Smith et al. (IEEE Proc. Computer Applications)", "Diabetes (Pima Indians Dataset)", "Early neural network (ADAP associative learning)", "Limited sample size (768 records); high false negative rate; lack of interactive deployment."],
-        ["1989", "Detrano et al. (Am. Journal of Cardiology)", "Cardiovascular (Cleveland Clinic)", "Logistic Regression & Bayesian probability", "Manual probability calculation; restricted to static features without real-time API integration."],
-        ["1995", "Wolberg, Street, et al. (UCI / PNAS)", "Breast Cancer (FNA Biopsy Images)", "Linear Programming & Multisurface Method", "Evaluated single isolated image features; lacked ensemble learning and web diagnostic reporting."],
+        ["1988", "Smith et al. (IEEE Computer Applications in Medicine)", "Diabetes (Pima Indians Dataset)", "ADAP Associative Learning Neural Network", "Small sample size (768 records); high false negative rate; no interactive web deployment."],
+        ["1989", "Detrano et al. (Am. Journal of Cardiology)", "Cardiovascular (Cleveland Clinic)", "Logistic Regression & Probability Matrix", "Manual probability calculation; restricted to static features without real-time API integration."],
+        ["1995", "Wolberg, Street, et al. (UCI / PNAS)", "Breast Cancer (Wisconsin FNA Biopsy)", "Linear Programming & Multisurface Method", "Evaluated single isolated image features; lacked ensemble learning and web diagnostic reporting."],
         ["2007", "Little et al. (IEEE Trans. Biomedical Eng.)", "Parkinson's Disease (Vocal Dysphonia)", "Non-linear dynamical speech analysis & SVM", "Acoustic-only study; lacked end-to-end client integration, visual risk gauges, and clinical summary export."],
         ["2021", "Mohan et al. (Springer Computer Methods)", "Heart Disease Prediction System", "Hybrid Machine Learning (Random Forest + Linear Model)", "Monolithic script architecture; high latency; no automated hospital-ready PDF generation."]
     ]
@@ -332,21 +382,57 @@ def create_university_deck():
     callout_lit = s6.shapes.add_textbox(Inches(0.8), Inches(6.1), Inches(11.733), Inches(0.6))
     tf_cl = callout_lit.text_frame
     p_cl = tf_cl.paragraphs[0]
-    p_cl.text = "Research Gap Addressed: Existing literature focuses on siloed single-disease algorithmic models without unified full-stack integration, instant zero-reload reactive user interfaces, or automated clinical report generation."
+    p_cl.text = "Research Gap Addressed: Existing literature focuses on siloed single-disease models without unified full-stack integration, instant zero-reload reactive user interfaces, or automated clinical report generation."
     p_cl.font.size = Pt(9.5)
     p_cl.font.italic = True
     p_cl.font.bold = True
     p_cl.font.color.rgb = C_INDIGO
 
     # =========================================================================
-    # SLIDE 7: PROBLEM STATEMENT
+    # SLIDE 7: OBJECTIVES (Placed before Problem Statement per syllabus order)
     # =========================================================================
     s7 = prs.slides.add_slide(blank_layout)
     set_bg(s7, C_LIGHT_BG)
-    add_slide_structure(s7, 7, "Problem Statement", "PROBLEM FORMULATION")
+    add_slide_structure(s7, 7, "Objectives")
 
-    add_card(s7, Inches(0.8), Inches(1.5), Inches(11.733), Inches(1.5), bg_color=C_WHITE, border_color=C_INDIGO, line_w=1.5)
-    tb_ps = s7.shapes.add_textbox(Inches(1.0), Inches(1.6), Inches(11.3), Inches(1.3))
+    objs_data = [
+        ("Objective 1: Multi-Class Biomedical Modeling", "Train, tune, and persist four specialized supervised classifiers: Support Vector Classifier for Diabetes (77.3%), Logistic Regression for Heart Disease (80.3%), Linear SVM for Parkinson's dysphonia (87.2%), and an Ensemble Random Forest Pipeline for Breast Cancer (97.4%)."),
+        ("Objective 2: Robust Data Pipeline & Leakage Elimination", "Implement automated feature scaling pipelines using StandardScaler() encapsulated within Scikit-Learn Pipeline structures, preventing data leakage and guaranteeing feature schema alignment."),
+        ("Objective 3: Decoupled Asynchronous API Development", "Architect high-performance RESTful API microservices utilizing FastAPI and Uvicorn with Pydantic request validation schemas and automatic OpenAPI / Swagger interactive documentation (/docs)."),
+        ("Objective 4: Reactive Zero-Reload User Interface", "Construct a responsive Single Page Application (SPA) leveraging Tailwind CSS and Chart.js, rendering dynamic risk meters, visual gauges, and biomarker benchmark comparisons with sub-20ms AJAX latency."),
+        ("Objective 5: Automated Clinical PDF Report Engine", "Develop an on-demand PDF report generation engine (fpdf2) that creates structured clinical screening summaries incorporating patient metadata, biomarker breakdown tables, and medical next-steps in 1 click."),
+        ("Objective 6: Quality Assurance & Deployment Readiness", "Implement an automated test suite (test_app.py) validating 100% of prediction pathways and containerize the entire architecture with Docker for cross-platform cloud portability.")
+    ]
+
+    for i, (title, desc) in enumerate(objs_data):
+        top = Inches(1.5 + i * 0.85)
+        add_card(s7, Inches(0.8), top, Inches(11.733), Inches(0.75))
+        
+        tb = s7.shapes.add_textbox(Inches(1.0), top + Inches(0.08), Inches(11.3), Inches(0.6))
+        tf = tb.text_frame
+        tf.word_wrap = True
+
+        p = tf.paragraphs[0]
+        p.text = title
+        p.font.size = Pt(11.5)
+        p.font.bold = True
+        p.font.color.rgb = C_INDIGO
+
+        p_d = tf.add_paragraph()
+        p_d.text = desc
+        p_d.font.size = Pt(9.5)
+        p_d.font.color.rgb = C_TEXT_DARK
+        p_d.space_before = Pt(2)
+
+    # =========================================================================
+    # SLIDE 8: PROBLEM STATEMENT
+    # =========================================================================
+    s8 = prs.slides.add_slide(blank_layout)
+    set_bg(s8, C_LIGHT_BG)
+    add_slide_structure(s8, 8, "Problem Statement")
+
+    add_card(s8, Inches(0.8), Inches(1.5), Inches(11.733), Inches(1.5), bg_color=C_WHITE, border_color=C_INDIGO, line_w=1.5)
+    tb_ps = s8.shapes.add_textbox(Inches(1.0), Inches(1.6), Inches(11.3), Inches(1.3))
     tf_ps = tb_ps.text_frame
     tf_ps.word_wrap = True
 
@@ -367,7 +453,7 @@ def create_university_deck():
     p_p2.font.color.rgb = C_TEXT_DARK
     p_p2.space_before = Pt(4)
 
-    # 3 Specific Root Challenges
+    # 3 Root Challenges
     challenges = [
         ("Challenge 1: Isolated Diagnostic Silos", "Clinicians currently must rely on fragmented, standalone predictive scripts for different conditions, leading to inefficient clinical triage and inconsistent patient risk records."),
         ("Challenge 2: Inflexible Dashboard Performance", "Legacy Python dashboard prototypes (e.g. Streamlit) suffer from full-page re-execution on every parameter change, causing high latency, interface lag, and state loss."),
@@ -376,8 +462,8 @@ def create_university_deck():
 
     for i, (h, b) in enumerate(challenges):
         left = Inches(0.8 + i * 3.95)
-        add_card(s7, left, Inches(3.2), Inches(3.8), Inches(3.4))
-        tb = s7.shapes.add_textbox(left + Inches(0.2), Inches(3.35), Inches(3.4), Inches(3.0))
+        add_card(s8, left, Inches(3.2), Inches(3.8), Inches(3.4))
+        tb = s8.shapes.add_textbox(left + Inches(0.2), Inches(3.35), Inches(3.4), Inches(3.0))
         tf = tb.text_frame
         tf.word_wrap = True
 
@@ -394,47 +480,11 @@ def create_university_deck():
         p_b.space_before = Pt(8)
 
     # =========================================================================
-    # SLIDE 8: OBJECTIVES
-    # =========================================================================
-    s8 = prs.slides.add_slide(blank_layout)
-    set_bg(s8, C_LIGHT_BG)
-    add_slide_structure(s8, 8, "Specific Project Objectives", "RESEARCH & TECHNICAL GOALS")
-
-    objs_data = [
-        ("Objective 1: Multi-Class Biomedical Modeling", "Train, tune, and persist four specialized supervised classifiers: Support Vector Classifier for Diabetes (77.3%), Logistic Regression for Heart Disease (80.3%), Linear SVM for Parkinson's dysphonia (87.2%), and an Ensemble Random Forest Pipeline for Breast Cancer (97.4%)."),
-        ("Objective 2: Robust Data Pipeline & Leakage Elimination", "Implement automated feature scaling pipelines using StandardScaler() encapsulated within Scikit-Learn Pipeline structures, preventing data leakage and guaranteeing feature schema alignment."),
-        ("Objective 3: Decoupled Asynchronous API Development", "Architect high-performance RESTful API microservices utilizing FastAPI and Uvicorn with Pydantic request validation schemas and automatic OpenAPI / Swagger interactive documentation (/docs)."),
-        ("Objective 4: Reactive Zero-Reload User Interface", "Construct a responsive Single Page Application (SPA) leveraging Tailwind CSS and Chart.js, rendering dynamic risk meters, visual gauges, and biomarker benchmark comparisons with sub-20ms AJAX latency."),
-        ("Objective 5: Automated Clinical PDF Report Engine", "Develop an on-demand PDF report generation engine (fpdf2) that creates structured clinical screening summaries incorporating patient metadata, biomarker breakdown tables, and medical next-steps in 1 click."),
-        ("Objective 6: Quality Assurance & Deployment Readiness", "Implement an automated test suite (test_app.py) validating 100% of prediction pathways and containerize the entire architecture with Docker for cross-platform cloud portability.")
-    ]
-
-    for i, (title, desc) in enumerate(objs_data):
-        top = Inches(1.5 + i * 0.85)
-        add_card(s8, Inches(0.8), top, Inches(11.733), Inches(0.75))
-        
-        tb = s8.shapes.add_textbox(Inches(1.0), top + Inches(0.08), Inches(11.3), Inches(0.6))
-        tf = tb.text_frame
-        tf.word_wrap = True
-
-        p = tf.paragraphs[0]
-        p.text = title
-        p.font.size = Pt(11.5)
-        p.font.bold = True
-        p.font.color.rgb = C_INDIGO
-
-        p_d = tf.add_paragraph()
-        p_d.text = desc
-        p_d.font.size = Pt(9.5)
-        p_d.font.color.rgb = C_TEXT_DARK
-        p_d.space_before = Pt(2)
-
-    # =========================================================================
     # SLIDE 9: PROPOSED WORK
     # =========================================================================
     s9 = prs.slides.add_slide(blank_layout)
     set_bg(s9, C_LIGHT_BG)
-    add_slide_structure(s9, 9, "Proposed Work & Methodology", "WORKFLOW & SYSTEM PHASES")
+    add_slide_structure(s9, 9, "Proposed Work")
 
     phases = [
         ("Phase 1: Dataset Acquisition", "Collect and validate benchmark biomedical datasets (PIDD, Cleveland Heart, Oxford Voice, and Wisconsin Diagnostic Biopsy).", C_INDIGO),
@@ -473,7 +523,7 @@ def create_university_deck():
     # =========================================================================
     s10 = prs.slides.add_slide(blank_layout)
     set_bg(s10, C_LIGHT_BG)
-    add_slide_structure(s10, 10, "System Architecture & Flow Diagram", "SYSTEM BLOCK DIAGRAM")
+    add_slide_structure(s10, 10, "Architecture Diagram/Flow Diagram/Block Diagram")
 
     arch_blocks = [
         ("TIER 1: CLIENT PRESENTATION", "Tailwind CSS + Chart.js SPA", ["Single Page Interface", "Asynchronous AJAX fetch()", "Real-time Chart.js gauges", "Patient Presets & Demo data", "Zero page reloads"]),
@@ -515,7 +565,7 @@ def create_university_deck():
     # =========================================================================
     s11 = prs.slides.add_slide(blank_layout)
     set_bg(s11, C_LIGHT_BG)
-    add_slide_structure(s11, 11, "Novel Idea & Unique Value Propositions", "INNOVATION & DISTINCTIVENESS")
+    add_slide_structure(s11, 11, "Novel idea")
 
     novelties = [
         ("1. Multi-Modal Clinical Convergence", "Unlike existing single-disease scripts, MediScan AI integrates four completely different clinical modalities into one unified decision-support engine—covering metabolic, cardiovascular, acoustic dysphonia, and biopsy cytopathology within a cohesive interface."),
@@ -549,7 +599,7 @@ def create_university_deck():
     # =========================================================================
     s12 = prs.slides.add_slide(blank_layout)
     set_bg(s12, C_LIGHT_BG)
-    add_slide_structure(s12, 12, "System Modules Breakdown", "MODULAR DECOMPOSITION")
+    add_slide_structure(s12, 12, "Modules")
 
     modules_list = [
         ("Module 1: Diabetes Mellitus Screening", "Evaluates metabolic vitals (Glucose, Insulin, BMI, Diastolic BP, Age, Skin Thickness, Pedigree) to screen for Type 2 Diabetes risk.", C_INDIGO),
@@ -584,7 +634,7 @@ def create_university_deck():
     # =========================================================================
     s13 = prs.slides.add_slide(blank_layout)
     set_bg(s13, C_LIGHT_BG)
-    add_slide_structure(s13, 13, "Detailed Module Description & Performance", "ALGORITHM SPECIFICATIONS")
+    add_slide_structure(s13, 13, "Module Description")
 
     mod_details = [
         ("Diabetes Screening", "Support Vector Classifier", "8 Vitals & Metabolic markers", "77.27%", "Calculates insulin resistance and glucose tolerance boundary margin; outputs diabetic risk stratification."),
@@ -634,7 +684,7 @@ def create_university_deck():
     # =========================================================================
     s14 = prs.slides.add_slide(blank_layout)
     set_bg(s14, C_LIGHT_BG)
-    add_slide_structure(s14, 14, "Software & Hardware Requirements", "ENVIRONMENT SPECIFICATIONS")
+    add_slide_structure(s14, 14, "Software & Hardware Requirements")
 
     # Software Card
     add_card(s14, Inches(0.8), Inches(1.5), Inches(5.8), Inches(5.1))
@@ -695,66 +745,33 @@ def create_university_deck():
         p_item.space_before = Pt(6)
 
     # =========================================================================
-    # SLIDE 15: WAY FORWARD TOWARDS OUTCOME (Research Paper / Patent)
+    # SLIDE 15: REFERENCES (Base paper hard copy to be submitted to supervisor)
     # =========================================================================
     s15 = prs.slides.add_slide(blank_layout)
-    set_bg(s15, C_LIGHT_BG)
-    add_slide_structure(s15, 15, "Way Forward Towards Outcome", "RESEARCH PUBLICATION & PATENT ROADMAP")
-
-    outcomes = [
-        ("1. Research Paper Publication", "Target Venues: IEEE International Conference on Bioinformatics and Biomedicine (BIBM) / Springer Lecture Notes in Networks and Systems.\n\nManuscript Focus: 'A Decoupled Asynchronous Microservice Framework for Multi-Disease Clinical Triage and Automated Diagnostic Report Generation.'", C_INDIGO),
-        ("2. Intellectual Property (IP / Copyright)", "Software Copyright Registration: Registering the MediScan AI source code, pipeline orchestration algorithms, and automated clinical PDF template compilation architecture under the National Copyright Office.\n\nPatent Potential: Method and system for multi-modal asynchronous clinical risk score calibration and automated document synthesis.", C_BLUE),
-        ("3. Production Deployment & Telemedicine Pilot", "Container Deployment: Deploying the Dockerized container onto cloud infrastructure (Render / AWS ECS / HuggingFace Spaces) with SSL encryption.\n\nPilot Integration: Partnering with community clinics to evaluate usability, clinical decision support utility, and physician workflow efficiency.", C_EMERALD)
-    ]
-
-    for i, (head, body, color) in enumerate(outcomes):
-        left = Inches(0.8 + i * 3.95)
-        add_card(s15, left, Inches(1.5), Inches(3.8), Inches(5.1))
-        
-        tb = s15.shapes.add_textbox(left + Inches(0.2), Inches(1.7), Inches(3.4), Inches(4.7))
-        tf = tb.text_frame
-        tf.word_wrap = True
-
-        p = tf.paragraphs[0]
-        p.text = head
-        p.font.size = Pt(13)
-        p.font.bold = True
-        p.font.color.rgb = color
-
-        p_b = tf.add_paragraph()
-        p_b.text = body
-        p_b.font.size = Pt(10)
-        p_b.font.color.rgb = C_TEXT_DARK
-        p_b.space_before = Pt(10)
-
-    # =========================================================================
-    # SLIDE 16: REFERENCES (Base Paper Hard Copy Note)
-    # =========================================================================
-    s16 = prs.slides.add_slide(blank_layout)
-    set_bg(s16, C_NAVY_DARK)
+    set_bg(s15, C_NAVY_DARK)
 
     # Header Box on Dark
-    t_box = s16.shapes.add_textbox(Inches(0.8), Inches(0.5), Inches(11.733), Inches(0.8))
+    t_box = s15.shapes.add_textbox(Inches(0.8), Inches(0.5), Inches(11.733), Inches(0.8))
     tf_t = t_box.text_frame
     p_t = tf_t.paragraphs[0]
-    p_t.text = "References & Base Paper Literature"
-    p_t.font.size = Pt(21)
+    p_t.text = "References (Base paper hard copy to be submitted to the supervisor.)"
+    p_t.font.size = Pt(18)
     p_t.font.bold = True
     p_t.font.color.rgb = C_WHITE
 
     # Base Paper Notice Card
-    notice_card = add_card(s16, Inches(0.8), Inches(1.3), Inches(11.733), Inches(0.75), bg_color=C_NAVY_MED, border_color=C_EMERALD)
-    tb_n = s16.shapes.add_textbox(Inches(1.0), Inches(1.38), Inches(11.3), Inches(0.6))
+    notice_card = add_card(s15, Inches(0.8), Inches(1.3), Inches(11.733), Inches(0.75), bg_color=C_NAVY_MED, border_color=C_EMERALD)
+    tb_n = s15.shapes.add_textbox(Inches(1.0), Inches(1.38), Inches(11.3), Inches(0.6))
     tf_n = tb_n.text_frame
     p_n = tf_n.paragraphs[0]
-    p_n.text = "★ Note: Base paper hard copy submitted to the project supervisor for verification."
+    p_n.text = "★ Official Notice: Base paper hard copy to be submitted directly to the project supervisor."
     p_n.font.size = Pt(11)
     p_n.font.bold = True
     p_n.font.color.rgb = C_EMERALD
 
     # References Card
-    ref_card = add_card(s16, Inches(0.8), Inches(2.2), Inches(11.733), Inches(4.4), bg_color=C_NAVY_MED, border_color=C_BORDER)
-    tb_r = s16.shapes.add_textbox(Inches(1.0), Inches(2.35), Inches(11.3), Inches(4.1))
+    ref_card = add_card(s15, Inches(0.8), Inches(2.2), Inches(11.733), Inches(4.4), bg_color=C_NAVY_MED, border_color=C_BORDER)
+    tb_r = s15.shapes.add_textbox(Inches(1.0), Inches(2.35), Inches(11.3), Inches(4.1))
     tf_r = tb_r.text_frame
     tf_r.word_wrap = True
 
@@ -779,18 +796,58 @@ def create_university_deck():
         p_ref.font.color.rgb = RGBColor(203, 213, 225)
         p_ref.space_before = Pt(6)
 
-    # Slide 16 Footer
-    f16_box = s16.shapes.add_textbox(Inches(0.8), Inches(6.9), Inches(11.733), Inches(0.4))
-    tf_f16 = f16_box.text_frame
-    p_f16 = tf_f16.paragraphs[0]
-    p_f16.text = "DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING                                                                                    SLIDE NO: 16"
-    p_f16.font.size = Pt(9)
-    p_f16.font.bold = True
-    p_f16.font.color.rgb = C_TEXT_MUTED
+    # Slide 15 Footer
+    f15_box = s15.shapes.add_textbox(Inches(0.8), Inches(6.9), Inches(11.733), Inches(0.4))
+    tf_f15 = f15_box.text_frame
+    p_f15 = tf_f15.paragraphs[0]
+    p_f15.text = "DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING                                                                                    SLIDE NO: 15"
+    p_f15.font.size = Pt(9)
+    p_f15.font.bold = True
+    p_f15.font.color.rgb = C_TEXT_MUTED
 
-    output_path = "MediScan_AI_University_Presentation.pptx"
+    # =========================================================================
+    # SLIDE 16: WAY FORWARD TOWARDS OUTCOME (Research Paper/Patent)
+    # =========================================================================
+    s16 = prs.slides.add_slide(blank_layout)
+    set_bg(s16, C_LIGHT_BG)
+    add_slide_structure(s16, 16, "Way forward towards Outcome (Research Paper/Patent)")
+
+    outcomes = [
+        ("1. Research Paper Publication", "Target Venues: IEEE International Conference on Bioinformatics and Biomedicine (BIBM) / Springer Lecture Notes in Networks and Systems.\n\nManuscript Focus: 'A Decoupled Asynchronous Microservice Framework for Multi-Disease Clinical Triage and Automated Diagnostic Report Generation.'", C_INDIGO),
+        ("2. Intellectual Property (IP / Copyright)", "Software Copyright Registration: Registering the MediScan AI source code, pipeline orchestration algorithms, and automated clinical PDF template compilation architecture under the National Copyright Office.\n\nPatent Potential: Method and system for multi-modal asynchronous clinical risk score calibration and automated document synthesis.", C_BLUE),
+        ("3. Production Deployment & Telemedicine Pilot", "Container Deployment: Deploying the Dockerized container onto cloud infrastructure (Render / AWS ECS / HuggingFace Spaces) with SSL encryption.\n\nPilot Integration: Partnering with community clinics to evaluate usability, clinical decision support utility, and physician workflow efficiency.", C_EMERALD)
+    ]
+
+    for i, (head, body, color) in enumerate(outcomes):
+        left = Inches(0.8 + i * 3.95)
+        add_card(s16, left, Inches(1.5), Inches(3.8), Inches(5.1))
+        
+        tb = s16.shapes.add_textbox(left + Inches(0.2), Inches(1.7), Inches(3.4), Inches(4.7))
+        tf = tb.text_frame
+        tf.word_wrap = True
+
+        p = tf.paragraphs[0]
+        p.text = head
+        p.font.size = Pt(13)
+        p.font.bold = True
+        p.font.color.rgb = color
+
+        p_b = tf.add_paragraph()
+        p_b.text = body
+        p_b.font.size = Pt(10)
+        p_b.font.color.rgb = C_TEXT_DARK
+        p_b.space_before = Pt(10)
+
+    output_path = "MediScan_AI_Department_Presentation.pptx"
     prs.save(output_path)
     print(f"University presentation successfully created: {output_path}")
+    
+    # Try also updating the original if not locked by PowerPoint
+    try:
+        prs.save("MediScan_AI_University_Presentation.pptx")
+        print("Also updated: MediScan_AI_University_Presentation.pptx")
+    except PermissionError:
+        print("Note: MediScan_AI_University_Presentation.pptx is open in PowerPoint. Saved to MediScan_AI_Department_Presentation.pptx")
 
 if __name__ == "__main__":
     create_university_deck()
