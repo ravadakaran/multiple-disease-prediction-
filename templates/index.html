@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediScan AI | Multiple Disease Diagnostic Platform</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eef2ff',
+              100: '#e0e7ff',
+              500: '#6366f1',
+              600: '#4f46e5',
+              700: '#4338ca',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Top Navigation Bar -->
+  <header class="bg-white/90 backdrop-blur sticky top-0 z-50 border-b border-slate-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-blue-500 flex items-center justify-center text-white shadow-md shadow-indigo-100">
+          <i data-lucide="activity" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight bg-gradient-to-r from-slate-900 to-indigo-900 bg-clip-text text-transparent">MediScan AI</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <a href="/docs" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center space-x-1.5 transition">
+          <i data-lucide="code" class="w-3.5 h-3.5"></i>
+          <span>Swagger API</span>
+        </a>
+        <div class="hidden sm:flex items-center space-x-2 text-xs font-medium text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span>Diagnostic Engine Active</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+    <!-- Left Column: Navigation & Disease Selector -->
+    <aside class="lg:col-span-3 space-y-4">
+      <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-200">
+        <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Screening Modules</h2>
+        <nav class="space-y-1.5" id="diseaseTabs">
+          <button onclick="switchTab('diabetes')" id="tab-diabetes" class="tab-btn w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition text-left bg-indigo-600 text-white shadow-sm shadow-indigo-100">
+            <div class="flex items-center space-x-3">
+              <i data-lucide="droplet" class="w-5 h-5"></i>
+              <span>Diabetes Risk</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 opacity-75"></i>
+          </button>
+
+          <button onclick="switchTab('heart')" id="tab-heart" class="tab-btn w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition text-left text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <div class="flex items-center space-x-3">
+              <i data-lucide="heart" class="w-5 h-5"></i>
+              <span>Cardiovascular</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+          </button>
+
+          <button onclick="switchTab('parkinsons')" id="tab-parkinsons" class="tab-btn w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition text-left text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <div class="flex items-center space-x-3">
+              <i data-lucide="mic" class="w-5 h-5"></i>
+              <span>Parkinson's Vocal</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+          </button>
+
+          <button onclick="switchTab('breast_cancer')" id="tab-breast_cancer" class="tab-btn w-full flex items-center justify-between px-3.5 py-3 rounded-xl font-medium text-sm transition text-left text-slate-600 hover:bg-slate-100 hover:text-slate-900">
+            <div class="flex items-center space-x-3">
+              <i data-lucide="scan" class="w-5 h-5"></i>
+              <span>Breast Cancer</span>
+            </div>
+            <i data-lucide="chevron-right" class="w-4 h-4 opacity-40"></i>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Quick Info Card -->
+      <div class="bg-indigo-50/70 border border-indigo-100 rounded-2xl p-4 text-xs text-indigo-950 space-y-2">
+        <div class="flex items-center space-x-2 font-semibold text-indigo-900">
+          <i data-lucide="info" class="w-4 h-4 text-indigo-600"></i>
+          <span>Clinical Screening Notice</span>
+        </div>
+        <p class="leading-relaxed text-indigo-800/90">
+          This system provides preliminary statistical predictions based on machine learning classifications. It does not replace professional clinical pathology.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Right Column: Interactive Diagnostic Form & Results -->
+    <div class="lg:col-span-9 space-y-6">
+
+      <!-- ================= DIABETES FORM ================= -->
+      <section id="panel-diabetes" class="disease-panel bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Diabetes Mellitus Screening</h1>
+            <p class="text-sm text-slate-500 mt-1">Screen for type 2 diabetes likelihood based on glucose tolerance and metabolic factors.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="fillSample('diabetes', 'healthy')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center space-x-1">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Healthy Preset</span>
+            </button>
+            <button onclick="fillSample('diabetes', 'risk')" class="px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition flex items-center space-x-1">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Diabetic Preset</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="form-diabetes" onsubmit="handlePrediction(event, 'diabetes')" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Pregnancies</label>
+              <input type="number" id="d_preg" name="Pregnancies" min="0" max="25" value="1" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Glucose Level (mg/dL)</label>
+              <input type="number" id="d_glu" name="Glucose" step="1" value="85" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Diastolic BP (mm Hg)</label>
+              <input type="number" id="d_bp" name="BloodPressure" step="1" value="66" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Skin Thickness (mm)</label>
+              <input type="number" id="d_skin" name="SkinThickness" step="1" value="29" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Insulin (mu U/ml)</label>
+              <input type="number" id="d_ins" name="Insulin" step="1" value="0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">BMI (kg/m²)</label>
+              <input type="number" id="d_bmi" name="BMI" step="0.1" value="26.6" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Diabetes Pedigree</label>
+              <input type="number" id="d_dpf" name="DiabetesPedigreeFunction" step="0.001" value="0.351" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Age (Years)</label>
+              <input type="number" id="d_age" name="Age" min="1" max="120" value="31" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 text-sm">
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 flex items-center space-x-2 transition">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Run Diagnostic Analysis</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= HEART FORM ================= -->
+      <section id="panel-heart" class="disease-panel hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Cardiovascular Risk Screening</h1>
+            <p class="text-sm text-slate-500 mt-1">Assess coronary artery disease probability using clinical examination data.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="fillSample('heart', 'healthy')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center space-x-1">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Healthy Preset</span>
+            </button>
+            <button onclick="fillSample('heart', 'risk')" class="px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition flex items-center space-x-1">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>High-Risk Preset</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="form-heart" onsubmit="handlePrediction(event, 'heart')" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Age</label>
+              <input type="number" id="h_age" name="age" value="55" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Biological Sex</label>
+              <select id="h_sex" name="sex" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Chest Pain Type</label>
+              <select id="h_cp" name="cp" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">0: Typical Angina</option>
+                <option value="1">1: Atypical Angina</option>
+                <option value="2">2: Non-Anginal Pain</option>
+                <option value="3">3: Asymptomatic</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Resting BP (mm Hg)</label>
+              <input type="number" id="h_trestbps" name="trestbps" value="130" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Serum Cholestoral (mg/dL)</label>
+              <input type="number" id="h_chol" name="chol" value="240" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Fasting Blood Sugar > 120</label>
+              <select id="h_fbs" name="fbs" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">No (<= 120 mg/dL)</option>
+                <option value="1">Yes (> 120 mg/dL)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Resting ECG</label>
+              <select id="h_restecg" name="restecg" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">0: Normal</option>
+                <option value="1">1: ST-T Wave Abnormality</option>
+                <option value="2">2: Left Ventricular Hypertrophy</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Max Heart Rate (bpm)</label>
+              <input type="number" id="h_thalach" name="thalach" value="150" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Exercise Angina</label>
+              <select id="h_exang" name="exang" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">ST Depression (Oldpeak)</label>
+              <input type="number" id="h_oldpeak" name="oldpeak" step="0.1" value="1.0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Slope of ST Segment</label>
+              <select id="h_slope" name="slope" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">0: Upsloping</option>
+                <option value="1">1: Flat</option>
+                <option value="2">2: Downsloping</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Fluoroscopy Vessels (0-3)</label>
+              <select id="h_ca" name="ca" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Thalassemia Defect</label>
+              <select id="h_thal" name="thal" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+                <option value="0">0: Normal</option>
+                <option value="1">1: Fixed Defect</option>
+                <option value="2">2: Reversible Defect</option>
+                <option value="3">3: Other</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 flex items-center space-x-2 transition">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Run Cardiovascular Assessment</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= PARKINSON'S FORM ================= -->
+      <section id="panel-parkinsons" class="disease-panel hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Parkinson's Vocal Acoustic Analysis</h1>
+            <p class="text-sm text-slate-500 mt-1">Analyze speech stability, frequency perturbations, and entropy for early Parkinsonian detection.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="fillSample('parkinsons', 'healthy')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center space-x-1">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Healthy Voice</span>
+            </button>
+            <button onclick="fillSample('parkinsons', 'risk')" class="px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition flex items-center space-x-1">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Parkinson's Voice</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="form-parkinsons" onsubmit="handlePrediction(event, 'parkinsons')" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Fo(Hz)</label>
+              <input type="number" id="p_fo" name="MDVP:Fo(Hz)" step="0.001" value="197.076" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Fhi(Hz)</label>
+              <input type="number" id="p_fhi" name="MDVP:Fhi(Hz)" step="0.001" value="206.896" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Flo(Hz)</label>
+              <input type="number" id="p_flo" name="MDVP:Flo(Hz)" step="0.001" value="192.055" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Jitter(%)</label>
+              <input type="number" id="p_j_pct" name="MDVP:Jitter(%)" step="0.00001" value="0.00289" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Jitter(Abs)</label>
+              <input type="number" id="p_j_abs" name="MDVP:Jitter(Abs)" step="0.00001" value="0.00001" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:RAP</label>
+              <input type="number" id="p_rap" name="MDVP:RAP" step="0.00001" value="0.00166" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:PPQ</label>
+              <input type="number" id="p_ppq" name="MDVP:PPQ" step="0.00001" value="0.00168" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Jitter:DDP</label>
+              <input type="number" id="p_ddp" name="Jitter:DDP" step="0.00001" value="0.00498" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Shimmer</label>
+              <input type="number" id="p_shimmer" name="MDVP:Shimmer" step="0.00001" value="0.01098" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:Shimmer(dB)</label>
+              <input type="number" id="p_shimmer_db" name="MDVP:Shimmer(dB)" step="0.001" value="0.097" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Shimmer:APQ3</label>
+              <input type="number" id="p_apq3" name="Shimmer:APQ3" step="0.00001" value="0.00563" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Shimmer:APQ5</label>
+              <input type="number" id="p_apq5" name="Shimmer:APQ5" step="0.00001" value="0.0068" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">MDVP:APQ</label>
+              <input type="number" id="p_apq" name="MDVP:APQ" step="0.00001" value="0.00802" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Shimmer:DDA</label>
+              <input type="number" id="p_dda" name="Shimmer:DDA" step="0.00001" value="0.01689" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">NHR</label>
+              <input type="number" id="p_nhr" name="NHR" step="0.00001" value="0.00339" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">HNR</label>
+              <input type="number" id="p_hnr" name="HNR" step="0.001" value="26.775" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">RPDE</label>
+              <input type="number" id="p_rpde" name="RPDE" step="0.000001" value="0.422229" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">DFA</label>
+              <input type="number" id="p_dfa" name="DFA" step="0.000001" value="0.741367" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">spread1</label>
+              <input type="number" id="p_spread1" name="spread1" step="0.0001" value="-7.3483" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">spread2</label>
+              <input type="number" id="p_spread2" name="spread2" step="0.000001" value="0.177551" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">D2</label>
+              <input type="number" id="p_d2" name="D2" step="0.000001" value="1.743867" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">PPE</label>
+              <input type="number" id="p_ppe" name="PPE" step="0.000001" value="0.085569" class="w-full px-3 py-2 rounded-xl border border-slate-200 text-sm">
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 flex items-center space-x-2 transition">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Run Acoustic Analysis</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= BREAST CANCER FORM ================= -->
+      <section id="panel-breast_cancer" class="disease-panel hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-100">
+          <div>
+            <h1 class="text-2xl font-bold text-slate-900">Breast Cancer Biopsy Screening</h1>
+            <p class="text-sm text-slate-500 mt-1">Classify fine needle aspirate (FNA) cell nuclei features as Benign or Malignant.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <button onclick="fillSample('breast_cancer', 'healthy')" class="px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition flex items-center space-x-1">
+              <i data-lucide="check" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>Benign Preset</span>
+            </button>
+            <button onclick="fillSample('breast_cancer', 'risk')" class="px-3 py-1.5 rounded-lg border border-amber-200 bg-amber-50/50 text-xs font-semibold text-amber-800 hover:bg-amber-100 transition flex items-center space-x-1">
+              <i data-lucide="alert-triangle" class="w-3.5 h-3.5 text-amber-600"></i>
+              <span>Malignant Preset</span>
+            </button>
+          </div>
+        </div>
+
+        <form id="form-breast_cancer" onsubmit="handlePrediction(event, 'breast_cancer')" class="space-y-6">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Radius</label>
+              <input type="number" id="bc_radius" name="mean radius" step="0.01" value="13.54" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Texture</label>
+              <input type="number" id="bc_texture" name="mean texture" step="0.01" value="14.36" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Perimeter</label>
+              <input type="number" id="bc_perimeter" name="mean perimeter" step="0.01" value="87.46" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Area</label>
+              <input type="number" id="bc_area" name="mean area" step="0.1" value="566.3" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Smoothness</label>
+              <input type="number" id="bc_smoothness" name="mean smoothness" step="0.0001" value="0.09779" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-700 uppercase mb-1">Mean Concavity</label>
+              <input type="number" id="bc_concavity" name="mean concavity" step="0.0001" value="0.06664" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm">
+            </div>
+          </div>
+
+          <div class="pt-4 flex justify-end">
+            <button type="submit" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-md shadow-indigo-100 flex items-center space-x-2 transition">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Run Biopsy Classification</span>
+            </button>
+          </div>
+        </form>
+      </section>
+
+      <!-- ================= RESULTS CARD (DYNAMIC) ================= -->
+      <section id="resultsSection" class="hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-6 transition-all duration-300">
+        <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+          <div class="flex items-center space-x-3">
+            <div id="resultStatusIcon" class="w-10 h-10 rounded-xl flex items-center justify-center text-white">
+              <i data-lucide="check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 id="resultTitle" class="text-lg font-bold text-slate-900">Assessment Complete</h2>
+              <p id="resultSubtitle" class="text-xs text-slate-500">Processed using trained scikit-learn classifier</p>
+            </div>
+          </div>
+          <button id="downloadPdfBtn" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-medium text-xs flex items-center space-x-2 transition">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download Report (PDF)</span>
+          </button>
+        </div>
+
+        <!-- Metric and Chart Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+          <div class="md:col-span-4 flex flex-col items-center justify-center p-6 bg-slate-50 rounded-2xl border border-slate-100">
+            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Estimated Risk Index</span>
+            <div class="relative flex items-center justify-center">
+              <span id="riskScoreText" class="text-4xl font-extrabold text-slate-900">0%</span>
+            </div>
+            <span id="riskBadge" class="mt-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">Low Risk</span>
+          </div>
+
+          <div class="md:col-span-8 p-4 bg-slate-50 rounded-2xl border border-slate-100">
+            <h3 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">Biomarker Level Breakdown</h3>
+            <div class="h-44 w-full">
+              <canvas id="resultChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recommendations Block -->
+        <div class="p-5 rounded-2xl bg-indigo-50/60 border border-indigo-100">
+          <h4 class="text-xs font-bold text-indigo-900 uppercase tracking-wider mb-2 flex items-center space-x-1.5">
+            <i data-lucide="clipboard-list" class="w-4 h-4 text-indigo-600"></i>
+            <span>Clinical Recommendations</span>
+          </h4>
+          <ul id="recommendationsList" class="text-xs text-indigo-950 space-y-1.5 list-disc list-inside">
+            <!-- Dynamically populated -->
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="bg-white border-t border-slate-200 py-6 text-center text-xs text-slate-500">
+    <p>MediScan AI Diagnostic System</p>
+  </footer>
+
+  <!-- Frontend Logic -->
+  <script>
+    lucide.createIcons();
+    let currentTab = 'diabetes';
+    let chartInstance = null;
+    let lastReportPayload = null;
+
+    // Presets
+    const SAMPLES = {
+      diabetes: {
+        healthy: { Pregnancies: 1, Glucose: 85, BloodPressure: 66, SkinThickness: 29, Insulin: 0, BMI: 26.6, DiabetesPedigreeFunction: 0.351, Age: 31 },
+        risk: { Pregnancies: 6, Glucose: 148, BloodPressure: 72, SkinThickness: 35, Insulin: 0, BMI: 33.6, DiabetesPedigreeFunction: 0.627, Age: 50 }
+      },
+      heart: {
+        healthy: { age: 67, sex: 1, cp: 0, trestbps: 160, chol: 286, fbs: 0, restecg: 0, thalach: 108, exang: 1, oldpeak: 1.5, slope: 1, ca: 3, thal: 2 },
+        risk: { age: 63, sex: 1, cp: 3, trestbps: 145, chol: 233, fbs: 1, restecg: 0, thalach: 150, exang: 0, oldpeak: 2.3, slope: 0, ca: 0, thal: 1 }
+      },
+      parkinsons: {
+        healthy: { 'MDVP:Fo(Hz)': 197.076, 'MDVP:Fhi(Hz)': 206.896, 'MDVP:Flo(Hz)': 192.055, 'MDVP:Jitter(%)': 0.00289, 'MDVP:Jitter(Abs)': 0.00001, 'MDVP:RAP': 0.00166, 'MDVP:PPQ': 0.00168, 'Jitter:DDP': 0.00498, 'MDVP:Shimmer': 0.01098, 'MDVP:Shimmer(dB)': 0.097, 'Shimmer:APQ3': 0.00563, 'Shimmer:APQ5': 0.0068, 'MDVP:APQ': 0.00802, 'Shimmer:DDA': 0.01689, 'NHR': 0.00339, 'HNR': 26.775, 'RPDE': 0.422229, 'DFA': 0.741367, 'spread1': -7.3483, 'spread2': 0.177551, 'D2': 1.743867, 'PPE': 0.085569 },
+        risk: { 'MDVP:Fo(Hz)': 119.992, 'MDVP:Fhi(Hz)': 157.302, 'MDVP:Flo(Hz)': 74.997, 'MDVP:Jitter(%)': 0.00784, 'MDVP:Jitter(Abs)': 0.00007, 'MDVP:RAP': 0.0037, 'MDVP:PPQ': 0.00554, 'Jitter:DDP': 0.01109, 'MDVP:Shimmer': 0.04374, 'MDVP:Shimmer(dB)': 0.426, 'Shimmer:APQ3': 0.02182, 'Shimmer:APQ5': 0.0313, 'MDVP:APQ': 0.02971, 'Shimmer:DDA': 0.06545, 'NHR': 0.02211, 'HNR': 21.033, 'RPDE': 0.414783, 'DFA': 0.815285, 'spread1': -4.813031, 'spread2': 0.266482, 'D2': 2.301442, 'PPE': 0.284654 }
+      },
+      breast_cancer: {
+        healthy: { 'mean radius': 13.54, 'mean texture': 14.36, 'mean perimeter': 87.46, 'mean area': 566.3, 'mean smoothness': 0.09779, 'mean concavity': 0.06664 },
+        risk: { 'mean radius': 17.99, 'mean texture': 10.38, 'mean perimeter': 122.8, 'mean area': 1001.0, 'mean smoothness': 0.1184, 'mean concavity': 0.3001 }
+      }
+    };
+
+    function switchTab(tabId) {
+      currentTab = tabId;
+      document.querySelectorAll('.disease-panel').forEach(p => p.classList.add('hidden'));
+      document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm', 'shadow-indigo-100');
+        btn.classList.add('text-slate-600', 'hover:bg-slate-100');
+        const icon = btn.querySelector('.lucide-chevron-right');
+        if (icon) icon.classList.replace('opacity-75', 'opacity-40');
+      });
+
+      const activeBtn = document.getElementById(`tab-${tabId}`);
+      activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm', 'shadow-indigo-100');
+      activeBtn.classList.remove('text-slate-600', 'hover:bg-slate-100');
+      const activeIcon = activeBtn.querySelector('.lucide-chevron-right');
+      if (activeIcon) activeIcon.classList.replace('opacity-40', 'opacity-75');
+
+      document.getElementById('resultsSection').classList.add('hidden');
+    }
+
+    function fillSample(disease, type) {
+      const sample = SAMPLES[disease][type];
+      const form = document.getElementById(`form-${disease}`);
+      for (const [key, val] of Object.entries(sample)) {
+        const input = form.querySelector(`[name="${key}"]`);
+        if (input) input.value = val;
+      }
+    }
+
+    async function handlePrediction(event, disease) {
+      event.preventDefault();
+      const form = document.getElementById(`form-${disease}`);
+      const formData = new FormData(form);
+      const payload = {};
+      formData.forEach((value, key) => {
+        payload[key] = parseFloat(value);
+      });
+
+      const endpointMap = {
+        diabetes: '/api/predict/diabetes',
+        heart: '/api/predict/heart',
+        parkinsons: '/api/predict/parkinsons',
+        breast_cancer: '/api/predict/breast-cancer'
+      };
+
+      try {
+        const res = await fetch(endpointMap[disease], {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        displayResults(data, disease, payload);
+      } catch (err) {
+        alert('Prediction error: ' + err.message);
+      }
+    }
+
+    function displayResults(data, disease, inputPayload) {
+      const resultsSection = document.getElementById('resultsSection');
+      resultsSection.classList.remove('hidden');
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+      const icon = document.getElementById('resultStatusIcon');
+      const badge = document.getElementById('riskBadge');
+      const title = document.getElementById('resultTitle');
+      const subtitle = document.getElementById('resultSubtitle');
+      const riskText = document.getElementById('riskScoreText');
+
+      riskText.innerText = `${data.risk_score.toFixed(1)}%`;
+      title.innerText = data.prediction_text;
+      subtitle.innerText = `Screening Result for ${data.disease_name}`;
+
+      if (data.is_positive) {
+        icon.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-white bg-red-600 shadow-md shadow-red-100';
+        icon.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5"></i>';
+        badge.className = 'mt-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-red-100 text-red-800';
+        badge.innerText = 'High Risk / Positive';
+      } else {
+        icon.className = 'w-10 h-10 rounded-xl flex items-center justify-center text-white bg-emerald-600 shadow-md shadow-emerald-100';
+        icon.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i>';
+        badge.className = 'mt-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800';
+        badge.innerText = 'Low Risk / Negative';
+      }
+
+      // Recommendations
+      const recList = document.getElementById('recommendationsList');
+      recList.innerHTML = '';
+      data.recommendations.forEach(rec => {
+        const li = document.createElement('li');
+        li.innerText = rec;
+        recList.appendChild(li);
+      });
+
+      // Render Chart.js
+      renderChart(data.chart_data);
+
+      // Setup PDF download payload
+      lastReportPayload = {
+        disease_name: data.disease_name,
+        prediction_text: data.prediction_text,
+        is_positive: data.is_positive,
+        risk_score: data.risk_score,
+        metrics_dict: inputPayload,
+        recommendations: data.recommendations
+      };
+
+      document.getElementById('downloadPdfBtn').onclick = downloadReportPdf;
+      lucide.createIcons();
+    }
+
+    function renderChart(chartData) {
+      const ctx = document.getElementById('resultChart').getContext('2d');
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: chartData.labels,
+          datasets: [
+            {
+              label: 'Patient Value',
+              data: chartData.patient_values,
+              backgroundColor: '#6366f1',
+              borderRadius: 6
+            },
+            {
+              label: 'Healthy Normal Max',
+              data: chartData.benchmarks,
+              backgroundColor: '#cbd5e1',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'top', labels: { boxWidth: 12, font: { size: 10 } } }
+          },
+          scales: {
+            x: { grid: { display: false } },
+            y: { grid: { color: '#f1f5f9' } }
+          }
+        }
+      });
+    }
+
+    async function downloadReportPdf() {
+      if (!lastReportPayload) return;
+      try {
+        const res = await fetch('/api/report/pdf', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(lastReportPayload)
+        });
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${lastReportPayload.disease_name.replace(/\\s+/g, '_')}_Report.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (err) {
+        alert('PDF download failed: ' + err.message);
+      }
+    }
+  </script>
+</body>
+</html>
+

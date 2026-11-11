@@ -1,0 +1,17 @@
+# Virtual Environment
+.venv/
+venv/
+ENV/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary Office Lock files
+~$*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
