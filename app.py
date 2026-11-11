@@ -255,35 +255,29 @@ elif page == "Diabetes":
 
 
 elif page == "Heart Disease":
-    page_intro("MODULE 02 · 13 FEATURES", "Heart disease prediction", "Provide clinical attributes in the numeric and category formats used by the model's training data.")
+    page_intro("MODULE 02 · 13 FEATURES", "Heart disease prediction", "Provide the thirteen attributes expected by the original heart-disease model.")
     with st.form("heart_form"):
         st.markdown("**Patient profile and measurements**")
-        numeric = numeric_fields([
-            ("heart_age", "Age (years)"), ("trestbps", "Resting BP (mmHg)"),
-            ("chol", "Cholesterol (mg/dL)"), ("thalach", "Maximum heart rate"),
+        st.caption("Enter the numeric values using the same category encoding as the original training dataset. The interface passes these values to the model without recoding them.")
+        fields = numeric_fields([
+            ("heart_age", "Age (years)"), ("sex", "Sex code"),
+            ("cp", "Chest pain type code"), ("trestbps", "Resting BP (mmHg)"),
+            ("chol", "Cholesterol (mg/dL)"), ("fbs", "Fasting blood sugar code"),
+            ("restecg", "Resting ECG code"), ("thalach", "Maximum heart rate"),
+            ("exang", "Exercise angina code"), ("oldpeak", "ST depression (oldpeak)"),
+            ("slope", "ST segment slope code"), ("ca", "Major vessels (ca)"),
+            ("thal", "Thalassemia (thal)"),
         ], columns=4)
-        cats1 = st.columns(4)
-        with cats1[0]: sex = category_field("Sex", [0, 1], {0: "Female", 1: "Male"}, "sex")
-        with cats1[1]: cp = category_field("Chest pain type", [0, 1, 2, 3], {0: "Typical angina", 1: "Atypical angina", 2: "Non-anginal pain", 3: "Asymptomatic"}, "cp")
-        with cats1[2]: fbs = category_field("Fasting blood sugar >120", [0, 1], {0: "No", 1: "Yes"}, "fbs")
-        with cats1[3]: restecg = category_field("Resting ECG", [0, 1, 2], {0: "Normal", 1: "ST-T abnormality", 2: "Possible LV hypertrophy"}, "restecg")
-        st.markdown("**Exercise and diagnostic attributes**")
-        cats2 = st.columns(5)
-        with cats2[0]: exang = category_field("Exercise angina", [0, 1], {0: "No", 1: "Yes"}, "exang")
-        with cats2[1]: oldpeak = st.text_input("ST depression (oldpeak)", key="input_oldpeak", placeholder="Enter numeric value")
-        with cats2[2]: slope = category_field("ST segment slope", [0, 1, 2], {0: "Upsloping", 1: "Flat", 2: "Downsloping"}, "slope")
-        with cats2[3]: ca = st.text_input("Major vessels (ca)", key="input_ca", placeholder="Enter numeric value")
-        with cats2[4]: thal = category_field("Thalassemia (thal)", [0, 1, 2], {0: "Normal", 1: "Fixed defect", 2: "Reversible defect"}, "thal")
         submitted = st.form_submit_button("Run heart disease prediction", use_container_width=True)
     if submitted:
-        values = parse_features([
-            ("Age", numeric["heart_age"], "numeric"), ("Sex", sex, "category"), ("Chest pain type", cp, "category"),
-            ("Resting blood pressure", numeric["trestbps"], "numeric"), ("Cholesterol", numeric["chol"], "numeric"),
-            ("Fasting blood sugar", fbs, "category"), ("Resting ECG", restecg, "category"),
-            ("Maximum heart rate", numeric["thalach"], "numeric"), ("Exercise-induced angina", exang, "category"),
-            ("ST depression", oldpeak, "numeric"), ("ST segment slope", slope, "category"),
-            ("Major vessels", ca, "numeric"), ("Thalassemia", thal, "category"),
-        ])
+        labels = [
+            "Age", "Sex code", "Chest pain type", "Resting blood pressure",
+            "Cholesterol", "Fasting blood sugar", "Resting ECG", "Maximum heart rate",
+            "Exercise-induced angina", "ST depression", "ST segment slope",
+            "Major vessels", "Thalassemia",
+        ]
+        order = ["heart_age", "sex", "cp", "trestbps", "chol", "fbs", "restecg", "thalach", "exang", "oldpeak", "slope", "ca", "thal"]
+        values = parse_features([(label, fields[key], "numeric") for label, key in zip(labels, order)])
         if values is not None:
             run_prediction(MODELS["heart"], values, "Heart disease")
     medical_notice()
