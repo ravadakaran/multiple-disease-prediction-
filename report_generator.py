@@ -35,6 +35,8 @@ def generate_pdf_report(
     risk_score: float,
     metrics_dict: dict,
     recommendations: list[str],
+    patient_name: str = "Anonymous Patient",
+    patient_id: str = "MS-2026-001",
 ) -> bytes:
     """
     Generates a PDF document in bytes.
@@ -43,13 +45,20 @@ def generate_pdf_report(
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    # 1. Metadata Block
-    pdf.set_font("Helvetica", "B", 11)
+    # 1. Patient & Metadata Block
+    pdf.set_font("Helvetica", "B", 10)
     pdf.set_text_color(15, 23, 42)
-    pdf.cell(95, 6, f"Screening Module: {disease_name}", new_x="RIGHT", new_y="TOP")
+    pdf.cell(95, 5, f"Patient Name: {patient_name}", new_x="RIGHT", new_y="TOP")
     pdf.set_font("Helvetica", "", 10)
     pdf.set_text_color(71, 85, 105)
-    pdf.cell(95, 6, f"Generated: {datetime.now().strftime('%B %d, %Y - %H:%M')}", align="R", new_x="LMARGIN", new_y="NEXT")
+    pdf.cell(95, 5, f"Patient ID: {patient_id}", align="R", new_x="LMARGIN", new_y="NEXT")
+
+    pdf.set_font("Helvetica", "B", 10)
+    pdf.set_text_color(15, 23, 42)
+    pdf.cell(95, 5, f"Screening Module: {disease_name}", new_x="RIGHT", new_y="TOP")
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(71, 85, 105)
+    pdf.cell(95, 5, f"Generated: {datetime.now().strftime('%B %d, %Y - %H:%M')}", align="R", new_x="LMARGIN", new_y="NEXT")
     pdf.ln(3)
 
     # 2. Executive Diagnostic Summary Card

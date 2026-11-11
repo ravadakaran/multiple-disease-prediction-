@@ -76,6 +76,8 @@ class ReportRequest(BaseModel):
     risk_score: float
     metrics_dict: Dict[str, Any]
     recommendations: List[str]
+    patient_name: str = "Anonymous Patient"
+    patient_id: str = "MS-2026-001"
 
 
 # ---------------------------------------------------------
@@ -294,6 +296,8 @@ async def download_pdf_report(req: ReportRequest):
         risk_score=req.risk_score,
         metrics_dict=req.metrics_dict,
         recommendations=req.recommendations,
+        patient_name=req.patient_name,
+        patient_id=req.patient_id,
     )
     filename = f"{req.disease_name.replace(' ', '_')}_Diagnostic_Report.pdf"
     return Response(
